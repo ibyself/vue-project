@@ -3,15 +3,40 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1749948_k5bddhlr4hk.css">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
+    
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script>
+      // function remRefresh(){
+      //   //获取设备屏幕宽度
+      //   let clientWidth=document.documentElement.clientWidth
+      //   //屏幕宽度等分
+      //   let rem=clientWidth/10
+      //   //设置根节点字体大小
+      //   document.documentElement.style.fontSize=rem+'px'
+      //   //设置body字体大小
+      //   document.body.style.fontSize='16px'
+      // }
+
+      // window.addEventListener('pageshow',function(){
+      //   remRefresh()
+      // })
+      // let timeId
+      // window.addEventListener('resize',()=>{
+        
+      //   timeId && clearTimeout(timeId)
+      //   timeId=setTimeout(()=>{
+      //     console.log('resize')
+      //     remRefresh()
+      //   },500)
+      // })
+    </script>
   </body>
 </html>

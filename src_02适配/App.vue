@@ -1,18 +1,15 @@
 <template>
-    <div>
-      <router-view></router-view>
-      <FooterNav/>
-
+    <div id="appContainer">
+      <h1>App</h1>
+      <div class="test1">没有适配</div>
+      <div class="test2">有适配</div>
     </div>
 </template>
 
 <script  type="text/ecmascript-6">
-    import FooterNav from './components/FooterNav/FooterNav'
-    export default {
-      components:{
-        FooterNav
-      }
-    };
+  export default {
+    
+  };
 </script>
 
 <style lang="stylus" scoped>
