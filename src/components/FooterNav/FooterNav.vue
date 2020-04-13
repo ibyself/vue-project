@@ -23,7 +23,7 @@
     export default {
         methods:{
             getPath(path){
-                this.$router.push(path)
+                path!==this.$route.path && this.$router.push(path)
             }
         }
     };
