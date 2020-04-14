@@ -13,9 +13,12 @@ export default{
         const result=await reqAddress(25.6862670000,114.3082430000)
         !!(result.code===0) && commit(SAVE_ADDRESS,result.data)
     },
-    async getCategoryListAction({commit}){
+    async getCategoryListAction({commit},fn){
         const result=await reqCategoryList()
-        !!(result.code===0) && commit(SAVE_CATEGORYLIST,result.data)
+        if(result.code===0){
+            commit(SAVE_CATEGORYLIST,result.data)
+            typeof fn ==="function" && fn()
+        }
     },
     async getShopListAction({commit}){
         const result=await reqShopList(25.6862670000,114.3082430000)

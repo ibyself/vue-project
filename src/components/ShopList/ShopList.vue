@@ -10,7 +10,7 @@
             <li class="shop_li border-1px"  v-for="(shopItem,index) in shopList" :key="index">
             <a>
                 <div class="shop_left">
-                <img class="shop_img" src="`https://fuss10.elemecdn.com/${shopItem.image_path}`">
+                <img class="shop_img" src="https://fuss10.elemecdn.com//2/35/696aa5cf9820adada9b11a3d14bf5jpeg.jpeg">
                 </div>
                 <div class="shop_right">
                 <section class="shop_detail_header">
@@ -59,7 +59,7 @@
     import {mapState} from 'vuex'
     export default {
         mounted(){
-            // this.$store.dispatch('getShopListAction')
+            this.$store.dispatch('getShopListAction')
         },
         computed:{
             ...mapState({

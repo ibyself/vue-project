@@ -27,13 +27,13 @@
         <!--首页导航-->
         <nav class="msite_nav">
           <div class="swiper-container">
-            <div class="swiper-wrapper" v-for="(category,index) in newCategorys" :key="index">
-              <div class="swiper-slide" v-for="(categoryItem,index) in category" :key="index">
-                <a href="javascript:" class="link_to_food">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide" v-for="(category,index) in newCategorys" :key="index">
+                <a href="javascript:" class="link_to_food" v-for="(categoryItem,index) in category" :key="index">
                   <div class="food_container">
                     <img :src="`https://fuss10.elemecdn.com/${categoryItem.image_url}`">
                   </div>
-                  <span>{{categoryItem.titel}}</span>
+                  <span>{{categoryItem.title}}</span>
                 </a>      
               </div>
              
@@ -49,24 +49,41 @@
 </template>
 
 <script  type="text/ecmascript-6">
-    import {mapState} from 'vuex'
     import Swiper from 'swiper'
     import 'swiper/css/swiper.min.css'
     import _ from 'lodash'
     import ShopList from '../../components/ShopList/ShopList'
+    import {mapState} from 'vuex'
     export default {
         components:{
             ShopList
         },
         mounted(){
           this.$store.dispatch('getAddressAction')
-          // this.$store.dispatch('getCategoryListAction')
-          new Swiper('.swiper-container', {
-            pagination: {
-              el: '.swiper-pagination',
-            },
-            loop:true,
+          this.$store.dispatch('getCategoryListAction',()=>{
+            this.$nextTick(()=>{
+              new Swiper('.swiper-container', {
+                pagination: {
+                  el: '.swiper-pagination',
+                },
+                loop:true,
+              })
+            })
           })
+          
+        },
+        methods:{
+          _chunk(target,size){
+            if(!Array.isArray(target) || size<=0){
+              return target
+            }
+            let result=[]
+            while(target.length>size){
+              result.push(target.splice(0,size))
+            }
+            !!target.length && result.push(target)
+            return result
+          }
         },
         computed:{
           ...mapState({
@@ -74,8 +91,23 @@
             categoryList:state=>state.categoryList
           }),
           newCategorys(){
-            return _.chunk(this.categoryList,8)
+            // return _.chunk(this.categoryList,8)
+            return this._chunk(this.categoryList,8)
           }
+        },
+        watch:{ 
+          // //解决swiper动态生成不能滑动方式一
+          // categoryList(){
+          //   //$nextTick  保证下一次组件加载完毕执行
+          //   this.$nextTick(()=>{
+          //     new Swiper('.swiper-container', {
+          //       pagination: {
+          //         el: '.swiper-pagination',
+          //       },
+          //       loop:true,
+          //     })
+          //   })
+          // }
         }
     };
 </script>
