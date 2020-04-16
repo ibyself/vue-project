@@ -34,14 +34,15 @@ export default [
         }
     },
     {
-        path:'/',
-        redirect:'/msite'
-    },
-    {
         path:'/login',
         component:Login,
         meta:{
             isShowFooter:false
         }
     },
+    {
+        path:'/',
+        redirect:'/login'
+    },
+    
 ]

@@ -4,16 +4,16 @@
         <div class="login_header">
           <h2 class="login_logo">硅谷外卖</h2>
           <div class="login_header_title">
-            <a href="javascript:;" class="on">短信登录</a>
-            <a href="javascript:;">密码登录</a>
+            <a href="javascript:;" @click="isUserPwdLogin=false" :class="{on:!isUserPwdLogin}">短信登录</a>
+            <a href="javascript:;" @click="isUserPwdLogin=true" :class="{on:isUserPwdLogin}">密码登录</a>
           </div>
         </div>
         <div class="login_content">
           <form>
-            <div class="on">
+            <div :class="{on:!isUserPwdLogin}">
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机号">
-                <button disabled="disabled" class="get_verification">获取验证码</button>
+                <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+                <button @click.prevent="getCode" :disabled="!userPhone||countDownTime>0" class="get_verification" :class="{rightBtn:userPhone}" >{{countDownTime?`${countDownTime}后重新发送`:'获取验证码'}}</button>
               </section>
               <section class="login_verification">
                 <input type="tel" maxlength="8" placeholder="验证码">
@@ -23,7 +23,7 @@
                 <a href="javascript:;">《用户服务协议》</a>
               </section>
             </div>
-            <div>
+            <div :class="{on:isUserPwdLogin}">
               <section>
                 <section class="login_message">
                   <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
@@ -37,7 +37,7 @@
                 </section>
                 <section class="login_message">
                   <input type="text" maxlength="11" placeholder="验证码">
-                  <img class="get_verification" src="../../common/images/captcha.svg" alt="captcha">
+                  <img class="get_verification" ref="captcha" @click="toggleCaptcha" src="http://localhost:4000/captcha" alt="captcha">
                 </section>
               </section>
             </div>
@@ -54,7 +54,31 @@
 
 <script  type="text/ecmascript-6">
     export default {
-
+      data(){
+        return {
+          isUserPwdLogin:false,
+          phone:'',
+          countDownTime:0
+        }
+      },
+      methods:{
+        getCode(){
+          alert('发送验证码')
+          this.countDownTime=5
+          let timeId= setInterval(()=>{
+            this.countDownTime--
+            this.countDownTime===0 && clearInterval(timeId)
+          },1000)
+        },
+        toggleCaptcha(){
+          this.$refs.captcha.src='http://localhost:4000/captcha?time='+Date.now()
+        }
+      },
+      computed:{
+        userPhone(){
+          return /^1(3|4|5|6|7|8|9)\d{9}$/.test(this.phone)
+        }
+      }
     };
 </script>
 
@@ -118,6 +142,8 @@
                   color #ccc
                   font-size 14px
                   background transparent
+                  &.rightBtn
+                    color #333
               .login_verification
                 position relative
                 margin-top 16px
