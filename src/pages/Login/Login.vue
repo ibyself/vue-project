@@ -12,11 +12,14 @@
           <form>
             <div :class="{on:!isUserPwdLogin}">
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+                  <input name="phone" type="tel" maxlength="11" v-validate="'required|phone'" placeholder="手机号" v-model="phone"> 
+                  <span style="color:red" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
+                
                 <button @click.prevent="getCode" :disabled="!userPhone||countDownTime>0" class="get_verification" :class="{rightBtn:userPhone}" >{{countDownTime?`${countDownTime}后重新发送`:'获取验证码'}}</button>
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="验证码">
+                <input name="code" type="tel" v-model="code" v-validate="'required|code'" maxlength="8" placeholder="验证码">
+                <span style="color:red" v-show="errors.has('code')">{{ errors.first('code') }}</span>
               </section>
               <section class="login_hint">
                 温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -58,17 +61,23 @@
         return {
           isUserPwdLogin:false,
           phone:'',
+          code:'',
           countDownTime:0
         }
       },
       methods:{
-        getCode(){
-          alert('发送验证码')
+        async getCode(){
           this.countDownTime=5
           let timeId= setInterval(()=>{
             this.countDownTime--
             this.countDownTime===0 && clearInterval(timeId)
           },1000)
+          const result=await this.$API.sendCode(this.phone)
+          if(result.code===0){
+            alert('短信发送成功')
+          }else{
+            alert('短信验证码发送失败')
+          }
         },
         toggleCaptcha(){
           this.$refs.captcha.src='http://localhost:4000/captcha?time='+Date.now()

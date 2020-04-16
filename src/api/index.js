@@ -23,3 +23,11 @@ export const reqShopList=(latitude,longitude)=>axios({
         needToken: true
       }
 })
+
+/**发送短信验证码 */
+export const sendCode=((phone)=>axios({
+    url:"/sendcode",
+    params:{
+        phone
+    }
+}))
