@@ -3,6 +3,7 @@ import Search from '../pages/Search/Search.vue'
 import Order from '../pages/Order/Order.vue'
 import Profile from '../pages/Profile/Profile.vue'
 import Login from '../pages/Login/Login.vue'
+import Shop from '../pages/Shop/Shop.vue'
 
 export default [
     {
@@ -44,5 +45,12 @@ export default [
         path:'/',
         redirect:'/login'
     },
+    {
+        path:'/shop',
+        component:Shop,
+        meta:{
+            isShowFooter:false
+        }
+    }
     
 ]

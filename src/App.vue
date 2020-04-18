@@ -14,7 +14,7 @@
         FooterNav
       },
       mounted(){
-        this.autoLogin
+        this.autoLogin()
       },
       methods:{
         async autoLogin(){

@@ -7,7 +7,7 @@
         </div>
         <div class="shop_container">
         <ul class="shop_list">
-            <li class="shop_li border-1px"  v-for="(shopItem,index) in shopList" :key="index">
+            <li @click="toShop" class="shop_li border-1px"  v-for="(shopItem,index) in shopList" :key="index">
             <a>
                 <div class="shop_left">
                 <img class="shop_img" src="https://fuss10.elemecdn.com//2/35/696aa5cf9820adada9b11a3d14bf5jpeg.jpeg">
@@ -64,6 +64,11 @@
             ...mapState({
                 shopList:state=>state.shopList
             })
+        },
+        methods:{
+            toShop(){
+                this.$router.push('/shop')
+            }
         }
         
     };
