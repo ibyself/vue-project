@@ -11,7 +11,7 @@
             <div class="profile_image">
               <i class="iconfont icon-person_round_fill"></i>
             </div>
-            <div class="user-info">
+            <div class="user-info" @click="toLogin">
               <p v-if="!user.phone" class="user-info-top">{{user.name?user.name:"登录/注册"}}</p>
               <p v-if="!user.name">
                 <span class="user-icon">
@@ -93,12 +93,28 @@
             </div>
           </a>
         </section>
+        <section class="profile_my_order border-1px">
+          <mt-button type="danger" @click="logout" style="width:100%">退出登录</mt-button>
+        </section>
       </section>
 </template>
 
 <script  type="text/ecmascript-6">
     import {mapState} from 'vuex'
+    import { MessageBox } from 'mint-ui'
+    import {LOGOUT} from '../../store/mutations-type'
     export default {
+        methods:{
+          toLogin(){
+            !!!this.user.id && this.$router.replace('/login')
+          },
+          logout(){
+            MessageBox.confirm('确认退出吗?').then(
+              resolve=>this.$store.commit(LOGOUT),
+              reject=>console.log('取消退出')
+            )
+          }
+        },
         computed:{
           ...mapState({
             user:state=>state.user

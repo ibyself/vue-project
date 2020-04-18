@@ -3,6 +3,8 @@ export const SAVE_CATEGORYLIST="save_categorylist"
 export const SAVE_SHOPLIST="save_shoplist"
 export const SAVE_USER="save_user"
 export const SAVE_TOKEN="save_token"
+export const LOGOUT="logout"
+
 
 
 
