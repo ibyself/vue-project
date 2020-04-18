@@ -12,9 +12,8 @@
           <form>
             <div :class="{on:!isUserPwdLogin}">
               <section class="login_message">
-                  <input name="phone" type="tel" maxlength="11" v-validate="'required|phone'" placeholder="手机号" v-model="phone"> 
-                  <span style="color:red" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
-                
+                <input name="phone" type="tel" maxlength="11" v-validate="'required|phone'" placeholder="手机号" v-model="phone"> 
+                <span style="color:red" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
                 <button @click.prevent="getCode" :disabled="!userPhone||countDownTime>0" class="get_verification" :class="{rightBtn:userPhone}" >{{countDownTime?`${countDownTime}后重新发送`:'获取验证码'}}</button>
               </section>
               <section class="login_verification">
@@ -29,22 +28,25 @@
             <div :class="{on:isUserPwdLogin}">
               <section>
                 <section class="login_message">
-                  <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                  <input name="username" v-model="username" v-validate="'required'" type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                  <span style="color:red" v-show="errors.has('username')">{{ errors.first('username') }}</span>
                 </section>
                 <section class="login_verification">
-                  <input type="tel" maxlength="8" placeholder="密码">
-                  <div class="switch_button off">
-                    <div class="switch_circle"></div>
-                    <span class="switch_text">...</span>
+                  <input name="pwd" v-model="pwd" v-validate="'required'" :type="isShowPwd?'tel':'password'" maxlength="8" placeholder="密码">
+                  <span style="color:red" v-show="errors.has('pwd')">{{ errors.first('pwd') }}</span>
+                  <div class="switch_button" @click="isShowPwd=!isShowPwd" :class="isShowPwd?'on':'off'">
+                    <div class="switch_circle" :class="{right:isShowPwd}"></div>
+                    <span class="switch_text">{{isShowPwd?'abc':'...'}}</span>
                   </div>
                 </section>
                 <section class="login_message">
-                  <input type="text" maxlength="11" placeholder="验证码">
+                  <input name="captcha" v-model="captcha" v-validate="'required'" type="text" maxlength="11" placeholder="验证码">
+                  <span style="color:red" v-show="errors.has('captcha')">{{ errors.first('captcha') }}</span>
                   <img class="get_verification" ref="captcha" @click="toggleCaptcha" src="http://localhost:4000/captcha" alt="captcha">
                 </section>
               </section>
             </div>
-            <button class="login_submit">登录</button>
+            <button class="login_submit" @click.prevent="login">登录</button>
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
@@ -59,9 +61,13 @@
     export default {
       data(){
         return {
-          isUserPwdLogin:false,
+          isUserPwdLogin:true,
+          isShowPwd:false,
           phone:'',
           code:'',
+          username:'',
+          pwd:'',
+          captcha:'',
           countDownTime:0
         }
       },
@@ -81,6 +87,33 @@
         },
         toggleCaptcha(){
           this.$refs.captcha.src='http://localhost:4000/captcha?time='+Date.now()
+        },
+        async login(){
+          let {isUserPwdLogin,phone,captcha,username,pwd,code}=this
+          let names=isUserPwdLogin?['username','pwd','captcha']:['phone','code']
+          const success = await this.$validator.validateAll(names)
+          if(success){
+            let result
+            if(isUserPwdLogin){
+              result = await this.$API.loginWithPwd({name:username,pwd,captcha})
+              if(result.code===1){
+                alert('请输入正确的用户名/密码/验证码')
+                this.toggleCaptcha()
+                this.captcha=''
+              }
+            }else{
+              result = await this.$API.loginWithPhone({phone,code})
+              if(result.code===1){
+                alert('请输入正确的验证码')
+                this.code=''
+              }
+            }
+            if(result.code===0){
+              alert('登录成功')
+              this.$router.replace('/profile')
+              this.$store.dispatch('getUserInfoAction',result.data)
+            }
+          }
         }
       },
       computed:{
@@ -192,6 +225,8 @@
                     background #fff
                     box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                     transition transform .3s
+                    &.right
+                      transform translateX(27px) 
               .login_hint
                 margin-top 12px
                 color #999

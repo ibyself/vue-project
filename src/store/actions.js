@@ -6,7 +6,9 @@ import {
 import {
     SAVE_ADDRESS,
     SAVE_CATEGORYLIST,
-    SAVE_SHOPLIST
+    SAVE_SHOPLIST,
+    SAVE_USER,
+    SAVE_TOKEN
 } from './mutations-type'
 export default{
     async getAddressAction({commit}){
@@ -23,5 +25,10 @@ export default{
     async getShopListAction({commit}){
         const result=await reqShopList(25.6862670000,114.3082430000)
         !!(result.code===0) && commit(SAVE_SHOPLIST,result.data)
+    },
+    async getUserInfoAction({commit},user){
+        !!user && localStorage.setItem('user_token',user.token)
+        delete user.token
+        !!user && commit(SAVE_USER,user) 
     }
 }

@@ -7,10 +7,20 @@
 </template>
 
 <script  type="text/ecmascript-6">
+    import {SAVE_USER} from './store/mutations-type'
     import FooterNav from './components/FooterNav/FooterNav'
     export default {
       components:{
         FooterNav
+      },
+      mounted(){
+        this.autoLogin
+      },
+      methods:{
+        async autoLogin(){
+          let result=await this.$API.autoLogin()
+          !!(result.code===0) && this.$store.commit(SAVE_USER,result.data)
+        }
       }
     };
 </script>
