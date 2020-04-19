@@ -26,7 +26,7 @@
                                     <span class="now">￥{{food.price}}</span>
                                     </div>
                                     <div class="cartcontrol-wrapper">
-                                    CartControl组件
+                                        <CartControl :food="food"/>
                                     </div>
                                 </div>
                             </li>
@@ -43,6 +43,7 @@
 <script  type="text/ecmascript-6">
     import {mapState} from 'vuex'
     import BScroll from 'better-scroll'
+    import CartControl from '../../../components/CartControl/CartControl'
     export default {
         data(){
             return {
@@ -56,6 +57,9 @@
                this._initTops()
            }
             
+        },
+        components:{
+            CartControl
         },
         methods:{
             _initScroll(){
