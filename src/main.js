@@ -7,6 +7,7 @@ import GshopHeader from './components/GshopHeader/GshopHeader.vue'
 import store from './store'
 import App from './App.vue'
 import * as API from './api'
+import './mock/mockServer'
 Vue.component('GshopHeader',GshopHeader)
 Vue.component(Button.name,Button)
 Vue.prototype.$API=API

@@ -17,10 +17,19 @@
 </template>
 
 <script  type="text/ecmascript-6">
+    import {mapState} from 'vuex'
     import ShopHeader from '../../components/ShopHeader/ShopHeader'
     export default {
         components:{
             ShopHeader
+        },
+        mounted(){
+            this.$store.dispatch('getShopDatasAction')
+        },
+        computed:{
+            ...mapState({
+                shopDatas:state=>state.shopDatas
+            })
         }
     };
 </script>

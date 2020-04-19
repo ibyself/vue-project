@@ -60,3 +60,11 @@ export const autoLogin=()=>axios({
         needToken: true
     }
 })
+
+/**测试mock 接口 */
+export const test=()=>axios('/test')
+
+/** 商家数据接口 */
+export const getShopDatas=()=>axios({
+    url:"/getShopDatas"
+})
