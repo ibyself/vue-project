@@ -1,13 +1,13 @@
 <template>
     <div id="goodContainer">
         <div class="leftContainer">
-            <ul class="navList">
-                <li v-for="(good,index) in goods" :key="index">{{good.name}}</li>
+            <ul class="navList" ref="leftUl">
+                <li @click="changeNavIndex(index)" :class="{active:navIndex===index}" v-for="(good,index) in goods" :key="index">{{good.name}}</li>
             </ul>
         </div>
         <div class="rightContainer">
             <div class="foods-wrapper">
-                <ul>
+                <ul ref="rightUl">
                     <li class="food-list-hook" v-for="(good,index) in goods" :key="index">
                         <h1 class="title">{{good.name}}</h1>
                         <ul>
@@ -44,32 +44,73 @@
     import {mapState} from 'vuex'
     import BScroll from 'better-scroll'
     export default {
+        data(){
+            return {
+                tops:[],
+                scrollY:0
+            }
+        },
         mounted(){
            if(this.goods){
                this._initScroll()
+               this._initTops()
            }
             
         },
         methods:{
             _initScroll(){
-                new BScroll('.leftContainer',{
-                    scrollY:true
+                this.leftScroll=new BScroll('.leftContainer',{
+                    scrollY:true,
+                    click:true
                 })
-                new BScroll('.rightContainer',{
-                    scrollY:true
+                this.rightScroll=new BScroll('.rightContainer',{
+                    scrollY:true,
+                    probeType:2,
+                    click:true
                 })
-                
-            }
+                this.rightScroll.on('scroll',({x,y})=>{
+                    this.scrollY=Math.abs(y)
+                })
+                this.rightScroll.on('scrollEnd',({x,y})=>{
+                    this.scrollY=Math.abs(y)
+                })
+            },
+            _initTops(){
+                let lis =Array.from(this.$refs.rightUl.children)
+                let tops=[]
+                let top=0
+                tops.push(top)
+                lis.reduce((pre,liItem)=>{
+                    pre+=liItem.clientHeight
+                    tops.push(pre)
+                    return pre
+                },top)
+                this.tops=tops
+            },
+            changeNavIndex(index){
+                this.scrollY=this.tops[index]
+                this.rightScroll.scrollTo(0,-this.scrollY,1000)
+            } 
         },
         computed:{
             ...mapState({
                 goods:state=>state.shop.shopDatas.goods
-            })
+            }),
+            navIndex(){
+                let {tops,scrollY}=this
+                let index=tops.findIndex((top,index)=>scrollY>=tops[index]&&scrollY<tops[index+1] )
+                if(this.leftScroll && index!==this.index){
+                    this.index=index
+                    this.leftScroll.scrollToElement(this.$refs.leftUl.children[index],1000)
+                }
+                return index
+            }
         },
         watch:{
             goods(){
                 this.$nextTick(()=>{
-                    this._initScroll
+                    this._initScroll()
+                    this._initTops()
                 })
             }
         }
@@ -92,6 +133,9 @@
                     text-align center
                     line-height 50px
                     position relative
+                    &.active
+                        background #fff
+                        color $green
                     &:after
                         content ''
                         width 80%
