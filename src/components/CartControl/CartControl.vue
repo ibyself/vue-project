@@ -1,7 +1,9 @@
 <template>
     <div class="cartcontrol">
-        <div @click="changeFoodCount(false)" class="iconfont icon-remove_circle_outline"></div>
-        <div class="cart-count">{{food.count}}</div>
+        <transition name="move">
+            <div v-show="food.count" @click="changeFoodCount(false)" class="iconfont icon-remove_circle_outline"></div>
+        </transition>
+        <div class="cart-count" v-show="food.count">{{food.count}}</div>
         <div @click="changeFoodCount(true)" class="iconfont icon-add-circle"></div>
     </div>
 
@@ -33,6 +35,11 @@
       line-height 24px
       font-size 24px
       color $green
+      &.move-enter-active,&.move-leave-active
+        transition all .6s
+      &.move-enter,&.move-leave-to
+        transform translateX(20px) rotate(180deg)
+        opacity 0
     .cart-count
       display: inline-block
       vertical-align: top

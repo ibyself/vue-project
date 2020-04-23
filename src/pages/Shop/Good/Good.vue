@@ -37,6 +37,7 @@
                 </ul>
             </div>
         </div>
+        <ShopCart />
     </div>
 </template>
 
@@ -44,6 +45,7 @@
     import {mapState} from 'vuex'
     import BScroll from 'better-scroll'
     import CartControl from '../../../components/CartControl/CartControl'
+    import ShopCart from '../../../components/ShopCart/ShopCart'
     export default {
         data(){
             return {
@@ -52,32 +54,38 @@
             }
         },
         mounted(){
-           if(this.goods){
-               this._initScroll()
-               this._initTops()
-           }
-            
+            if(this.goods){
+                this._initScroll()
+                this._initTops()
+            }
+                
         },
         components:{
-            CartControl
+            CartControl,
+            ShopCart
         },
         methods:{
             _initScroll(){
-                this.leftScroll=new BScroll('.leftContainer',{
-                    scrollY:true,
-                    click:true
-                })
-                this.rightScroll=new BScroll('.rightContainer',{
-                    scrollY:true,
-                    probeType:2,
-                    click:true
-                })
-                this.rightScroll.on('scroll',({x,y})=>{
-                    this.scrollY=Math.abs(y)
-                })
-                this.rightScroll.on('scrollEnd',({x,y})=>{
-                    this.scrollY=Math.abs(y)
-                })
+                if(this.leftScroll || this.rightScroll){
+                    this.leftScroll.refresh()
+                    this.rightScroll.refresh()
+                }else{
+                    this.leftScroll=new BScroll('.leftContainer',{
+                        scrollY:true,
+                        click:true
+                    })
+                    this.rightScroll=new BScroll('.rightContainer',{
+                        scrollY:true,
+                        probeType:2,
+                        click:true
+                    })
+                    this.rightScroll.on('scroll',({x,y})=>{
+                        this.scrollY=Math.abs(y)
+                    })
+                    this.rightScroll.on('scrollEnd',({x,y})=>{
+                        this.scrollY=Math.abs(y)
+                    })
+                }
             },
             _initTops(){
                 let lis =Array.from(this.$refs.rightUl.children)

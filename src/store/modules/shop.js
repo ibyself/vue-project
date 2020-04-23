@@ -2,11 +2,13 @@ import Vue from 'vue'
 import {
     SAVE_SHOPDATAS,
     ADD_FOOD_COUNT,
-    DEL_FOOD_COUNT
+    DEL_FOOD_COUNT,
+    CLEAR_CARTSHOPS
 } from '../mutations-type'
 import {getShopDatas} from '../../api'
 const state={
-    shopDatas:[]
+    shopDatas:{},
+    cartDatas:[],
 }
 const mutations={
     [SAVE_SHOPDATAS](state,shopDatas){
@@ -17,12 +19,20 @@ const mutations={
             food.count++
         }else{
             Vue.set(food,'count',1)
+            state.cartDatas.push(food)
         }
     },
     [DEL_FOOD_COUNT](state,{food}){
         if(food.count>0){
             food.count--
+            if(food.count===0){
+                state.cartDatas.splice(state.cartDatas.indexOf(food),1)
+            }
         }
+    },
+    [CLEAR_CARTSHOPS](state){
+        state.cartDatas.forEach(food => food.count=0)
+        state.cartDatas=[]
     }
 }
 const actions={
@@ -39,7 +49,16 @@ const actions={
     }
 }
 const getters={
-
+    totalCount(state){
+        return state.cartDatas.reduce((pre,food)=>{
+            return pre+=food.count
+        },0)
+    },
+    totalPrice(state){
+        return state.cartDatas.reduce((pre,food)=>{
+            return pre+=food.count*food.price
+        },0)
+    }
 }
 export default{
     state,
