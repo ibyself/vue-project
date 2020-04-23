@@ -3,7 +3,8 @@ import {
     SAVE_SHOPDATAS,
     ADD_FOOD_COUNT,
     DEL_FOOD_COUNT,
-    CLEAR_CARTSHOPS
+    CLEAR_CARTSHOPS,
+    SAVE_CARTSHOPS
 } from '../mutations-type'
 import {getShopDatas} from '../../api'
 const state={
@@ -33,6 +34,9 @@ const mutations={
     [CLEAR_CARTSHOPS](state){
         state.cartDatas.forEach(food => food.count=0)
         state.cartDatas=[]
+    },
+    [SAVE_CARTSHOPS](state,cartDatas){
+        state.cartDatas=cartDatas
     }
 }
 const actions={
