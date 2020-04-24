@@ -106,7 +106,7 @@
     export default {
         methods:{
           toLogin(){
-            !!!this.user.id && this.$router.replace('/login')
+            !this.user.id && this.$router.replace('/login')
           },
           logout(){
             MessageBox.confirm('确认退出吗?').then(

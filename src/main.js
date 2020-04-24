@@ -8,6 +8,7 @@ import store from './store'
 import App from './App.vue'
 import * as API from './api'
 import './mock/mockServer'
+import i18n from './i18n'
 Vue.component('GshopHeader',GshopHeader)
 Vue.component(Button.name,Button)
 Vue.prototype.$API=API
@@ -19,6 +20,7 @@ new Vue({
   components:{App},
   template:'<App/>',
   router,
+  i18n,
   store
 })
 

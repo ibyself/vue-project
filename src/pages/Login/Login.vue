@@ -46,7 +46,7 @@
                 </section>
               </section>
             </div>
-            <button class="login_submit" @click.prevent="login">登录</button>
+            <button class="login_submit" @click.prevent="login">{{$t('login')}}</button>
           </form>
           <a href="javascript:;" class="about_us">关于我们</a>
         </div>
@@ -54,6 +54,11 @@
           <i class="iconfont icon-jiantouzuo"></i>
         </a>
       </div>
+      <div class="languageContainer">
+        <mt-button @click="toggleLanguage('Chinese')" type="primary">中文</mt-button>
+        <mt-button @click="toggleLanguage('English')" type="primary">英文</mt-button>
+        <mt-button @click="toggleLanguage('Japanese')" type="primary">日文</mt-button>
+      </div>  
     </section>
 </template>
 
@@ -114,12 +119,18 @@
               this.$store.dispatch('getUserInfoAction',result.data)
             }
           }
+        },
+        toggleLanguage(language){
+          this.$i18n.locale=language
         }
       },
       computed:{
         userPhone(){
           return /^1(3|4|5|6|7|8|9)\d{9}$/.test(this.phone)
         }
+      },
+      mounted(){
+        this.$i18n.locale='Chinese'
       }
     };
 </script>
@@ -261,5 +272,14 @@
           >.iconfont
             font-size 20px
             color #999
- 
+      .languageContainer
+        display flex
+        margin-top 50px
+        justify-content space-around
+
+
+
+
+
+
 </style>
