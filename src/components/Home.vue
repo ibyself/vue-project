@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div id="homeContainer">
+        <br>
+        <br>
+        <br>
+        <br>
         <h2>Home组件内容</h2>
-        <slot></slot>
-        <slot name="left"></slot>
-        <slot name="right">后备内容</slot>
-        <p>{{person.firstName}}</p>
-        <slot name="person" :person="person"></slot>
+        <hr>
     </div>
 </template>
 
@@ -13,16 +13,17 @@
     export default {
         data(){
             return {
-                person:{
-                    firstName:'kobe',
-                    lastName:'wede'
-                }
+               
             }
+        },
+        activated(){
+             document.documentElement.scrollTop=0
         }
     };
 </script>
 
-<style scoped>
-
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+    #homeContainer
+        height 2000px
  
 </style>
