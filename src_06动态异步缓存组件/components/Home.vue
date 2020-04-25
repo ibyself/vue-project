@@ -1,7 +1,11 @@
 <template>
-    <div>
-        <h2>Home组件</h2>
-        <button @click="$emit('click',123)">触发Home组件的自定义事件</button>
+    <div id="homeContainer">
+        <br>
+        <br>
+        <br>
+        <br>
+        <h2>Home组件内容</h2>
+        <hr>
     </div>
 </template>
 
@@ -12,11 +16,14 @@
                
             }
         },
-        
+        activated(){
+             document.documentElement.scrollTop=0
+        }
     };
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    
+    #homeContainer
+        height 2000px
  
 </style>

@@ -26,7 +26,8 @@ module.exports = {
           '^/api':''
         }
       }
-    }
+    },
+    open:true,
   },
 
   pluginOptions: {
